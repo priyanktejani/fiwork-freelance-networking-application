@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "686957525277",
+    "project_id": "fiwork-app",
+    "storage_bucket": "fiwork-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686957525277:android:b7c4e68131143eda4489f4",
+        "android_client_info": {
+          "package_name": "com.pt.fiwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686957525277-ta01b3bdngo9ian7sv3r1lprl8ldd5j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyB8iSVaSKPZVWHaGJBgKFZVsSJGnkht0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "686957525277-ta01b3bdngo9ian7sv3r1lprl8ldd5j6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
