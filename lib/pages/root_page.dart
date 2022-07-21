@@ -1,5 +1,6 @@
 import 'package:fiwork/pages/add_post_page.dart';
 import 'package:fiwork/pages/home/home_page.dart';
+import 'package:fiwork/pages/search_page.dart';
 import 'package:flutter/material.dart';
 
 class RootPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class _RootPageState extends State<RootPage> {
   final pages = [
     const HomePage(),
     const AddPostPage(),
+    const SearchPage()
   ];
 
   @override

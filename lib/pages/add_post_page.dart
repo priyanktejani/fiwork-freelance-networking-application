@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:fiwork/services/auth/auth_service.dart';
+import 'package:fiwork/services/cloud/cloud_user.dart';
+import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
 import 'package:fiwork/services/storage/firebase_file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,8 +15,18 @@ class AddPostPage extends StatefulWidget {
 }
 
 class _AddPostPageState extends State<AddPostPage> {
+  CloudUser? _user;
   File? _image;
   String? _imageName;
+  late final FirebaseCloudStorage _cloudService;
+  late final TextEditingController _captionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _captionController = TextEditingController();
+    _cloudService = FirebaseCloudStorage();
+  }
 
   Future pickImage(ImageSource source) async {
     try {
@@ -41,7 +53,28 @@ class _AddPostPageState extends State<AddPostPage> {
         title: const Text('Add post'),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              final currentUser = AuthService.firebase().currentUser!;
+              final userId = currentUser.id;
+
+              _user = await _cloudService.getUser(userId: userId);
+
+              final profileUrl = await FirebaseFileStorage().uploadPostImage(
+                userId: userId,
+                image: _image!,
+                imageName: _imageName!,
+              );
+
+              _cloudService.createNewPost(
+                userId: userId,
+                profileUrl: profileUrl,
+                fullName: _user!.fullName,
+                postUrl: profileUrl,
+                caption: _captionController.text,
+                likes: [],
+              );
+              
+            },
             child: const Text(
               'Post',
               style: TextStyle(
@@ -53,9 +86,10 @@ class _AddPostPageState extends State<AddPostPage> {
       ),
       body: Column(
         children: [
-          const TextField(
+          TextField(
+            controller: _captionController,
             maxLength: 8,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Share an article, photo, gigs',
             ),
           ),
@@ -63,13 +97,6 @@ class _AddPostPageState extends State<AddPostPage> {
           TextButton(
             onPressed: (() async {
               await pickImage(ImageSource.gallery);
-              final currentUser = AuthService.firebase().currentUser!;
-              final userId = currentUser.id;
-              await FirebaseFileStorage().uploadPostImage(
-                userId: userId,
-                image: _image!,
-                imageName: _imageName!,
-              );
             }),
             child: const Text('Choose Image'),
           ),
