@@ -21,6 +21,7 @@ dependencies:
   image_picker: ^0.8.5+3
   firebase_storage: ^10.3.1
   intl: ^0.17.0
+  flutter_rating_bar: ^4.0.1
 
 
 dev_dependencies:
@@ -34,3 +35,4 @@ flutter:
   assets:
     - assets/images/
     - assets/images/story/
+    - assets/icons/

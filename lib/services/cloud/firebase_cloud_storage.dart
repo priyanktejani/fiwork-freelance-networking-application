@@ -43,7 +43,7 @@ class FirebaseCloudStorage {
     required String fullName,
     required String postUrl,
     required String caption,
-    required final likes,
+    required List likes,
   }) async {
     await firebaseFirestore.collection(posts).add({
       userIdFieldName: userId,

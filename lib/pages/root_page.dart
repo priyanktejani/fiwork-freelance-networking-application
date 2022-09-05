@@ -1,5 +1,6 @@
 import 'package:fiwork/pages/add_post_page.dart';
 import 'package:fiwork/pages/home/home_page.dart';
+import 'package:fiwork/pages/profile_page.dart';
 import 'package:fiwork/pages/search_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,8 @@ class _RootPageState extends State<RootPage> {
   final pages = [
     const HomePage(),
     const AddPostPage(),
-    const SearchPage()
+    const SearchPage(),
+    const ProgilePage(),
   ];
 
   @override
@@ -43,6 +45,11 @@ class _RootPageState extends State<RootPage> {
             icon: Icon(Icons.search_outlined),
             selectedIcon: Icon(Icons.search_off),
             label: 'Search',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.account_circle_outlined),
+            selectedIcon: Icon(Icons.account_circle),
+            label: 'Profile',
           ),
         ],
       ),

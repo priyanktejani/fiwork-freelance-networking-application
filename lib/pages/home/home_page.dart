@@ -62,8 +62,9 @@ class _HomePageState extends State<HomePage> {
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.grey, width: 2),
                     image: const DecorationImage(
-                        image: AssetImage('assets/images/azamat-zhanisov.jpg'),
-                        fit: BoxFit.cover),
+                      image: AssetImage('assets/images/azamat-zhanisov.jpg'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ],
@@ -138,13 +139,10 @@ class _HomePageState extends State<HomePage> {
                                     final post = allPosts.elementAt(index);
                                     return makeFeed(
                                       userName: post.fullName,
-                                      userImage:
-                                          'assets/images/aiony-haust.jpg',
+                                      userImage: post.profileUrl,
                                       feedTime: post.publishedTime,
-                                      feedText:
-                                          'All the Lorem Ipsum generators on the Internet tend to repeat predefined.',
-                                      feedImage:
-                                          'assets/images/story/story-2.jpg',
+                                      feedText: post.caption,
+                                      feedImage: post.postUrl,
                                     );
                                   });
                             } else {
@@ -173,8 +171,10 @@ Widget makeStory({storyImage, userImage, userName}) {
       margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        image:
-            DecorationImage(image: AssetImage(storyImage), fit: BoxFit.cover),
+        image: DecorationImage(
+          image: AssetImage(storyImage),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -213,19 +213,20 @@ Widget makeFeed({userName, userImage, feedTime, feedText, feedImage}) {
     margin: const EdgeInsets.only(bottom: 20),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: [
             Row(
-              children: <Widget>[
+              children: [
                 Container(
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(userImage), fit: BoxFit.cover)),
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(userImage), fit: BoxFit.cover),
+                  ),
                 ),
                 const SizedBox(
                   width: 10,
@@ -236,10 +237,11 @@ Widget makeFeed({userName, userImage, feedTime, feedText, feedImage}) {
                     Text(
                       userName,
                       style: TextStyle(
-                          color: Colors.grey[900],
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1),
+                        color: Colors.grey[900],
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
                     ),
                     const SizedBox(
                       height: 3,
@@ -283,7 +285,7 @@ Widget makeFeed({userName, userImage, feedTime, feedText, feedImage}) {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: Image.asset(feedImage),
+                  child: Image.network(feedImage),
                 ),
               )
             : Container(),
@@ -292,12 +294,14 @@ Widget makeFeed({userName, userImage, feedTime, feedText, feedImage}) {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: [
             Row(
-              children: <Widget>[
+              children: [
                 makeLike(),
                 Transform.translate(
-                    offset: const Offset(-5, 0), child: makeLove()),
+                  offset: const Offset(-5, 0),
+                  child: makeLove(),
+                ),
                 const SizedBox(
                   width: 5,
                 ),
@@ -334,9 +338,10 @@ Widget makeLike() {
     width: 25,
     height: 25,
     decoration: BoxDecoration(
-        color: Colors.blue,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white)),
+      color: Colors.blue,
+      shape: BoxShape.circle,
+      border: Border.all(color: Colors.white),
+    ),
     child: const Center(
       child: Icon(Icons.thumb_up, size: 12, color: Colors.white),
     ),

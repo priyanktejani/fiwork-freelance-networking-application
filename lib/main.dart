@@ -1,5 +1,5 @@
 import 'package:fiwork/pages/authentication/login_page.dart';
-import 'package:fiwork/pages/root_page.dart';
+import 'package:fiwork/screens/home_screen.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +7,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Fiwork',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
       ),
       home: const AuthenticationWrapper(),
     ),
@@ -34,7 +35,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
           case ConnectionState.done:
             final user = AuthService.firebase().currentUser;
             if (user != null) {
-              return const RootPage();
+              return const HomeScreen();
             } else {
               return const LogInPage();
             }
