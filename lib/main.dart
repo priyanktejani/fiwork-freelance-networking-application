@@ -1,5 +1,5 @@
 import 'package:fiwork/pages/authentication/login_page.dart';
-import 'package:fiwork/screens/home_screen.dart';
+import 'package:fiwork/pages/root_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
           case ConnectionState.done:
             final user = AuthService.firebase().currentUser;
             if (user != null) {
-              return const HomeScreen();
+              return const RootPage();
             } else {
               return const LogInPage();
             }

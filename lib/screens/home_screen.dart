@@ -36,12 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 9, 0, 9),
+          padding: const EdgeInsets.fromLTRB(10, 10, 0, 7),
           child: IconButton(
             onPressed: () {},
             icon: Image.asset(
-              'assets/icons/settings.png',
-              color: Colors.white,
+              'assets/icons/plus.png',
+              color: Colors.grey.shade300,
             ),
           ),
         ),
@@ -52,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               onPressed: () {},
               icon: Image.asset(
-                'assets/icons/messenger.png',
-                color: Colors.white,
+                'assets/icons/chat-6.png',
+                color: Colors.grey.shade300,
               ),
             ),
           ),
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: SizedBox(
-              height: 401,
+              height: 400,
               child: PageView.builder(
                 padEnds: false,
                 controller: pageController,
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 4,
+            itemCount: 6,
             itemBuilder: (context, index) {
               return const Align(
                 heightFactor: 0.9,
@@ -115,7 +115,7 @@ class GigsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double blur = active! ? 16 : 0;
     final double offset = active! ? 4 : 0;
-    final double top = active! ? 0 : 40;
+    final double top = active! ? 0 : 39;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
@@ -207,7 +207,7 @@ class GigsCard extends StatelessWidget {
                       color: Colors.white,
                     ),
                     child: Text(
-                      'Recipe',
+                      'Programming & Tech',
                       style: TextStyle(
                         fontSize: 13,
                         color: gigs!.startColor,
@@ -250,7 +250,9 @@ class PostCard extends StatelessWidget {
         color: Colors.white,
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/images/aiony-haust.jpg'),
+          image: AssetImage(
+            'assets/images/aiony-haust.jpg',
+          ),
         ),
       ),
       child: Stack(
@@ -316,11 +318,13 @@ class PostCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(14),
-                        primary: Colors.white10,
+                        backgroundColor: Colors.white10,
                       ),
-                      child: const Icon(
-                        Icons.comment,
+                      child: Image.asset(
+                        'assets/icons/comment.png',
                         color: Colors.white70,
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                     ElevatedButton(
@@ -328,11 +332,16 @@ class PostCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(14),
-                        primary: Colors.white10,
+                        backgroundColor: Colors.white10,
                       ),
-                      child: const Icon(
-                        Icons.send,
-                        color: Colors.white70,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Image.asset(
+                          'assets/icons/send.png',
+                          color: Colors.white70,
+                          width: 22,
+                          height: 22,
+                        ),
                       ),
                     ),
                   ],
@@ -343,8 +352,8 @@ class PostCard extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26),
                     ),
-                    padding: const EdgeInsets.all(13),
-                    primary: Colors.white,
+                    padding: const EdgeInsets.all(12),
+                    backgroundColor: Colors.white,
                   ),
                   child: Row(
                     children: [
@@ -357,14 +366,16 @@ class PostCard extends StatelessWidget {
                       ),
                       Text(
                         '2.5k',
-                        style: TextStyle(color: Colors.grey.shade900,),
+                        style: TextStyle(
+                          color: Colors.grey.shade900,
+                        ),
                       )
                     ],
                   ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

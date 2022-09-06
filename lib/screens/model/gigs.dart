@@ -17,22 +17,22 @@ class Gigs {
 
 var gigs = [
   Gigs(
-    recipeName: 'Vegan Apricot Tart',
-    recipeImage: 'img-vegan-apricot-tart.jpeg',
+    recipeName: 'Wordpress, Game Development, Mobile Apps',
+    recipeImage: 'programming.jpg',
     recipeMaker: 'Foodie Yuki',
-    startColor: const Color(0xFFF37552),
-    endColor: const Color(0xFFF58B5A),
+    startColor: const Color(0xFF212121),
+    endColor: const Color(0xFF424242),
   ),
   Gigs(
-    recipeName: 'Chorizo & mozzarella gnocchi bake',
-    recipeImage: 'img-gnocchi.webp',
+    recipeName: 'Logo & Brand Identity, Art & Illustration',
+    recipeImage: 'graphic-design.jpg',
     recipeMaker: 'Marianne Turner',
     startColor: const Color(0xFF621e14),
     endColor: const Color(0xFFd13b10),
   ),
   Gigs(
-    recipeName: 'Easy butter chicken',
-    recipeImage: 'img-butter-chicken.webp',
+    recipeName: 'Marketing Strategy, Social Media Marketing, Local SEO',
+    recipeImage: 'digital-marketing.jpg',
     recipeMaker: 'Jennifer Joyce',
     startColor: const Color(0xFFe18b41),
     endColor: const Color(0xFFc7c73d),

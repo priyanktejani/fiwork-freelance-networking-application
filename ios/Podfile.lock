@@ -937,7 +937,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 21186f0ca7849f90f4a3219fa31a5eca2e30f113
   FirebaseStorage: b47b4a04062ab07911063571241c103a8a2a2332
   FirebaseStorageInternal: 50c963664bc73739b68eb2d8427c91de5168dbcf
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   GoogleAppMeasurement: 7a33224321f975d58c166657260526775d9c6b1a
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
