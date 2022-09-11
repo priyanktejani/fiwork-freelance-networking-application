@@ -1,3 +1,4 @@
+import 'package:fiwork/tabs/post_tab.dart';
 import 'package:fiwork/tabs/services_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -8,12 +9,25 @@ class ProgilePage extends StatefulWidget {
   State<ProgilePage> createState() => _ProgilePageState();
 }
 
-class _ProgilePageState extends State<ProgilePage> {
+class _ProgilePageState extends State<ProgilePage> with SingleTickerProviderStateMixin{
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+  
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -124,7 +138,7 @@ class _ProgilePageState extends State<ProgilePage> {
 
             // username
             Padding(
-              padding: const EdgeInsets.fromLTRB(26, 18, 26, 0),
+              padding: const EdgeInsets.fromLTRB(26, 18, 26, 14),
               child: Column(
                 children: const [
                   Text(
@@ -149,11 +163,6 @@ class _ProgilePageState extends State<ProgilePage> {
                   ),
                 ],
               ),
-            ),
-
-            // buttons
-            const SizedBox(
-              height: 14,
             ),
 
             Row(
@@ -188,35 +197,31 @@ class _ProgilePageState extends State<ProgilePage> {
                 ),
               ],
             ),
-            // tabs
-            const SizedBox(
-              height: 14,
-            ),
+
             TabBar(
-              // indicatorColor: Colors.transparent,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
+              controller: tabController,
+              indicatorColor: Colors.transparent,
+              padding: const EdgeInsets.fromLTRB(0, 14, 0, 0),
               tabs: [
-                const Tab(
-                  icon: Icon(
-                    Icons.grid_4x4,
+                Tab(
+                  icon: Image.asset(
+                    'assets/icons/grid-2.png',
+                    color: Colors.white,
+                    height: 18,
                   ),
                 ),
-                const Tab(
-                  icon: Icon(
-                    Icons.sell,
+                Tab(icon:
+                  Image.asset(
+                    'assets/icons/list-2.png',
+                    color: Colors.white,
+                    height: 20,
                   ),
                 ),
                 Tab(
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 1, color: Colors.white),
-                    ),
-                    child: const Icon(Icons.sell),
+                  icon: Image.asset(
+                    'assets/icons/info-button.png',
+                    color: Colors.white,
+                    height: 20,
                   ),
                 ),
               ],
@@ -225,7 +230,7 @@ class _ProgilePageState extends State<ProgilePage> {
             const Expanded(
               child: TabBarView(
                 children: [
-                  Text('Image'),
+                  PostTab(),
                   ServicesTab(),
                   ServicesTab(),
                 ],
@@ -233,7 +238,6 @@ class _ProgilePageState extends State<ProgilePage> {
             )
           ],
         ),
-      ),
     );
   }
 }
