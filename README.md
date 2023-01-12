@@ -1,16 +1,35 @@
-# fiwork
+<h1 align="center">fiwork</h1>
 
-A new Flutter project.
+</div>
 
-## Getting Started
+## Test
+1. Clone this repository or download as zip.
 
-This project is a starting point for a Flutter application.
+```sh
+https://github.com/priyanktejani/fiwork-freelance-networking-application.git
+``` 
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p align="center">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/1.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/2.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/3.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/4.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/5.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/6.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/7.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/8.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/9.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/10.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/11.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/12.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/13.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/14.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/15.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/16.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/17.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/18.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/19.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/20.png">
+	<img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/21.png">
+    <img width=24%; src="https://github.com/priyanktejani/fiwork-freelance-networking-application/blob/master/screenshots/22.png">
+</p>
