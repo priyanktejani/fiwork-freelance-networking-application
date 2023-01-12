@@ -1,6 +1,4 @@
 import 'package:fiwork/constants/routes.dart';
-import 'package:fiwork/pages/activity/activity_page.dart';
-import 'package:fiwork/pages/root_page.dart';
 import 'package:flutter/material.dart';
 
 class OrderSuccessPage extends StatefulWidget {

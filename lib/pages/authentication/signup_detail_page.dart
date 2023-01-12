@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/pages/authentication/widget/text_field_input.dart';
-import 'package:fiwork/pages/root_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
 import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';

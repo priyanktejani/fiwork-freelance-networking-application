@@ -1,7 +1,6 @@
 import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/pages/authentication/signup_page.dart';
 import 'package:fiwork/pages/authentication/widget/text_field_input.dart';
-import 'package:fiwork/pages/root_page.dart';
 import 'package:fiwork/services/auth/auth_exceptions.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:flutter/gestures.dart';

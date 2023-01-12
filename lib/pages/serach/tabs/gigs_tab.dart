@@ -54,7 +54,7 @@ class _GigsTabState extends State<GigsTab> {
                         ),
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
-                            childCount: searchGigs!.length,
+                            childCount: searchGigs.length,
                             (context, index) {
                               final userGig = searchGigs[index];
                               return Padding(

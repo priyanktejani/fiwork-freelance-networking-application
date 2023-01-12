@@ -1,8 +1,6 @@
 import 'package:fiwork/pages/activity/offer_details.page.dart';
-import 'package:fiwork/pages/activity/order_details.page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:fiwork/services/cloud/cloud_models/cloud_custom_offer.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_order.dart';
 import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

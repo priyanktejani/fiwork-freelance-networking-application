@@ -52,7 +52,7 @@ class _RecommendationsTabState extends State<RecommendationsTab> {
                           ),
                         ),
                         SliverMasonryGrid.count(
-                          childCount: allPosts!.length,
+                          childCount: allPosts.length,
                           crossAxisCount: 2,
                           crossAxisSpacing: 6,
                           mainAxisSpacing: 6,

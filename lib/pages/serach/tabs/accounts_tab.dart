@@ -53,7 +53,7 @@ class _AccountsTabState extends State<AccountsTab> {
                         ),
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
-                            childCount: searchUsers!.length,
+                            childCount: searchUsers.length,
                             (context, index) {
                               final user = searchUsers[index];
                               return Padding(

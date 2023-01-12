@@ -1,8 +1,6 @@
 import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/enums/menu_actions.dart';
-import 'package:fiwork/pages/add_post/add_post_page.dart';
 import 'package:fiwork/gigs.dart';
-import 'package:fiwork/pages/chat/chat_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
 import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
