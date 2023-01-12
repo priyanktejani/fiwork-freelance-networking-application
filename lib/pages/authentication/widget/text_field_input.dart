@@ -5,6 +5,7 @@ class TextFieldInput extends StatelessWidget {
   final TextInputType textInputType;
   final String hintText;
   final bool isPassword;
+  final int maxLine;
 
   const TextFieldInput({
     Key? key,
@@ -12,19 +13,25 @@ class TextFieldInput extends StatelessWidget {
     required this.textInputType,
     required this.hintText,
     this.isPassword = false,
+    this.maxLine = 1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final textFieldBorder =
-        OutlineInputBorder(borderSide: Divider.createBorderSide(context));
+    final textFieldBorder = OutlineInputBorder(
+      borderSide: Divider.createBorderSide(context),
+      borderRadius: BorderRadius.circular(18.0),
+    );
 
     return TextField(
       controller: textEditingController,
       keyboardType: textInputType,
       obscureText: isPassword,
+      maxLines: maxLine,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(8),
+        fillColor: Colors.white12,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         hintText: hintText,
         border: textFieldBorder,
         focusedBorder: textFieldBorder,

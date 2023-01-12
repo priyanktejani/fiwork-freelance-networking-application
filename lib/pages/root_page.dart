@@ -1,7 +1,8 @@
-import 'package:fiwork/pages/add_post_page.dart';
-import 'package:fiwork/pages/profile_page.dart';
-import 'package:fiwork/pages/search_page.dart';
-import 'package:fiwork/screens/home_screen.dart';
+import 'package:fiwork/pages/activity/activity_page.dart';
+import 'package:fiwork/pages/profile/profile_page.dart';
+import 'package:fiwork/pages/serach/search_page.dart';
+import 'package:fiwork/pages/gig/gigs_page.dart';
+import 'package:fiwork/pages/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class RootPage extends StatefulWidget {
@@ -15,17 +16,20 @@ class _RootPageState extends State<RootPage> {
   int index = 0;
   final pages = [
     const HomeScreen(),
-    const AddPostPage(),
     const SearchPage(),
-    const ProgilePage(),
-    const ProgilePage(),
+    const ActivityPage(),
+    const ProfilePage(),
+    const GigsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: pages[index],
+      body: IndexedStack(
+        index: index,
+        children: pages,
+      ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(32),

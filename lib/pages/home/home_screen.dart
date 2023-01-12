@@ -1,5 +1,13 @@
-import 'package:fiwork/screens/model/gigs.dart';
+import 'package:fiwork/constants/routes.dart';
+import 'package:fiwork/enums/menu_actions.dart';
+import 'package:fiwork/pages/add_post/add_post_page.dart';
+import 'package:fiwork/gigs.dart';
+import 'package:fiwork/pages/chat/chat_page.dart';
+import 'package:fiwork/services/auth/auth_service.dart';
+import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
+import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,12 +17,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final FirebaseCloudStorage _postService;
   final PageController pageController = PageController(viewportFraction: 0.75);
   int currentPage = 0;
+
+  final currentUser = AuthService.firebase().currentUser!;
+  String get currentUserId => currentUser.id;
 
   @override
   void initState() {
     super.initState();
+    _postService = FirebaseCloudStorage();
     pageController.addListener(() {
       int position = pageController.page!.round();
       if (currentPage != position) {
@@ -38,19 +51,35 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 0, 7),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                addPostRoute,
+                // (Route<dynamic> route) => false,
+              );
+            },
             icon: Image.asset(
               'assets/icons/plus.png',
               color: Colors.grey.shade300,
             ),
           ),
         ),
-        title: const Text('appname'),
+        title: Text(
+          'fiwork',
+          style: GoogleFonts.dancingScript(
+            fontSize: 30.0,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 9, 9, 9),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  chatRoute,
+                  // (Route<dynamic> route) => false,
+                );
+              },
               icon: Image.asset(
                 'assets/icons/chat-6.png',
                 color: Colors.grey.shade300,
@@ -85,18 +114,77 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 20,
           ),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 6,
-            itemBuilder: (context, index) {
-              return const Align(
-                heightFactor: 0.9,
-                alignment: Alignment.topCenter,
-                child: PostCard(),
-              );
+
+          //
+          StreamBuilder(
+            stream: _postService.allPosts(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.active:
+                  if (snapshot.hasData) {
+                    final allPosts = snapshot.data as Iterable<CloudPost>;
+                    if (allPosts.isEmpty) {
+                      return Center(
+                        child: Image.asset(
+                          'assets/icons/nothing.png',
+                          height: 68,
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: allPosts.length,
+                      itemBuilder: (context, index) {
+                        final post = allPosts.elementAt(index);
+                        return Align(
+                          heightFactor: 0.9,
+                          alignment: Alignment.topCenter,
+                          child: PostCard(
+                            userName: post.fullName,
+                            userImage: post.profileUrl,
+                            profession: post.profession,
+                            feedTime: post.publishedTime.toIso8601String(),
+                            feedText: post.caption,
+                            feedImage: post.postUrl,
+                            like: () {
+                              _postService.likePost(
+                                post.postId,
+                                post.userId,
+                                post.likes,
+                              );
+                            },
+                            likeCount: post.likes.length,
+                            isLiked: true,
+                            comment: () {
+                              Navigator.pushNamed(
+                                context,
+                                postCommentRoute,
+                                arguments: post,
+                              );
+                            },
+                            postMenu: (PostMenu item) {
+                              // edit post
+                              if (item == PostMenu.edit) {
+                              } else {
+                                // delete post
+                                _postService.deletePost(post.postId);
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    // show no post message
+                    return const Center(child: Text('No Post'));
+                  }
+                default:
+                  return const Center(child: CircularProgressIndicator());
+              }
             },
-          )
+          ),
         ],
       ),
     );
@@ -207,7 +295,7 @@ class GigsCard extends StatelessWidget {
                       color: Colors.white,
                     ),
                     child: Text(
-                      'Programming & Tech',
+                      gigs!.category,
                       style: TextStyle(
                         fontSize: 13,
                         color: gigs!.startColor,
@@ -234,7 +322,32 @@ class GigsCard extends StatelessWidget {
 }
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final String userName;
+  final String userImage;
+  final String profession;
+  final String feedTime;
+  final String feedText;
+  final String feedImage;
+  final VoidCallback? like;
+  int likeCount = 0;
+  bool isLiked = false;
+  final VoidCallback? comment;
+
+  final Function(PostMenu)? postMenu;
+  PostCard({
+    Key? key,
+    required this.userName,
+    required this.userImage,
+    required this.profession,
+    required this.feedTime,
+    required this.feedText,
+    required this.feedImage,
+    required this.like,
+    required this.comment,
+    required this.postMenu,
+    required this.likeCount,
+    required this.isLiked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -243,15 +356,15 @@ class PostCard extends StatelessWidget {
       height: 550,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeOutQuint,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(36),
         ),
         color: Colors.white,
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage(
-            'assets/images/aiony-haust.jpg',
+          image: NetworkImage(
+            feedImage,
           ),
         ),
       ),
@@ -264,42 +377,58 @@ class PostCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 42,
-                      height: 42,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                        image: const DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/images/averie-woodard.jpg'),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'jessy_29',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
+                Container(
+                  padding: const EdgeInsets.all(11),
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(userImage),
                           ),
                         ),
-                        Text('UX designer')
-                      ],
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            userName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(profession)
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuButton(
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: postMenu,
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<PostMenu>>[
+                    const PopupMenuItem<PostMenu>(
+                      value: PostMenu.edit,
+                      child: Text('edit'),
+                    ),
+                    const PopupMenuItem<PostMenu>(
+                      value: PostMenu.delete,
+                      child: Text('Delete'),
                     ),
                   ],
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.more_vert,
-                  ),
                 ),
               ],
             ),
@@ -314,11 +443,11 @@ class PostCard extends StatelessWidget {
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: comment,
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(14),
-                        backgroundColor: Colors.white10,
+                        backgroundColor: Colors.white24,
                       ),
                       child: Image.asset(
                         'assets/icons/comment.png',
@@ -332,7 +461,7 @@ class PostCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(14),
-                        backgroundColor: Colors.white10,
+                        backgroundColor: Colors.white24,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
@@ -347,7 +476,7 @@ class PostCard extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: like,
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26),
@@ -357,15 +486,15 @@ class PostCard extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.favorite,
-                        color: Colors.red,
+                        color: isLiked ? Colors.red : Colors.black,
                       ),
                       const SizedBox(
                         width: 4,
                       ),
                       Text(
-                        '2.5k',
+                        likeCount.toString(),
                         style: TextStyle(
                           color: Colors.grey.shade900,
                         ),

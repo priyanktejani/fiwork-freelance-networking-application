@@ -1,5 +1,15 @@
+import 'package:fiwork/constants/routes.dart';
+import 'package:fiwork/pages/add_post/add_post_page.dart';
+import 'package:fiwork/pages/add_post/create_gig_page.dart';
 import 'package:fiwork/pages/authentication/login_page.dart';
+import 'package:fiwork/pages/authentication/signup_detail_page.dart';
+import 'package:fiwork/pages/authentication/signup_page.dart';
+import 'package:fiwork/pages/chat/chat_page.dart';
+import 'package:fiwork/pages/home/comments_page.dart';
+import 'package:fiwork/pages/home/home_screen.dart';
+import 'package:fiwork/pages/profile/profile_page.dart';
 import 'package:fiwork/pages/root_page.dart';
+import 'package:fiwork/pages/serach/search_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +23,19 @@ void main() async {
         brightness: Brightness.dark,
       ),
       home: const AuthenticationWrapper(),
+      routes: {
+        loginRoute: (context) => const LogInPage(),
+        signupRoute: (context) => const SignUpPage(),
+        rootRoute:(context) => const RootPage(),
+        signupDetailRoute:(context) => const SignupDetailPage(),
+        homeRoute: (context) => const HomeScreen(),
+        searchRoute: (context) => const SearchPage(),
+        chatRoute:(context) => const ChatPage(),
+        addPostRoute: (context) => const AddPostPage(),
+        postCommentRoute: (context) => const CommentsPage(),
+        profileRoute: (context) => const ProfilePage(),
+        createGigRoute:(context) => const CreateGigPage(),
+      },
     ),
   );
 }
