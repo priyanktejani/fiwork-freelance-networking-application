@@ -16,7 +16,7 @@ dependencies:
   firebase_auth: ^3.3.20
   cloud_firestore: ^3.1.18
   firebase_analytics: ^9.1.10
-  file_picker: ^4.6.1
+  file_picker: ^5.2.0
   firebase_core: ^1.19.1
   image_picker: ^0.8.5+3
   firebase_storage: ^10.3.1
@@ -24,6 +24,10 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   font_awesome_flutter: ^10.1.0
   flutter_staggered_grid_view: ^0.6.2
+  google_fonts: ^3.0.1
+  shared_preferences: ^2.0.15
+  uuid: ^3.0.7
+  webview_flutter: ^4.0.1
 
 
 dev_dependencies:

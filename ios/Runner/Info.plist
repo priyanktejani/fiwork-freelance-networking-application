@@ -42,11 +42,11 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<string>Choose Photo from galary</string>
+	<string>Choose Photo from Gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Choose Photo from gala</string>
+	<string>Choose Photo from Gallery</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Choose Photo from galar</string>
+	<string>Choose Photo from Gallery</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
