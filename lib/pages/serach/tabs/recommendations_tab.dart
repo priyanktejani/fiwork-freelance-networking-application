@@ -1,5 +1,5 @@
-import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -12,18 +12,13 @@ class RecommendationsTab extends StatefulWidget {
 }
 
 class _RecommendationsTabState extends State<RecommendationsTab> {
-  late final FirebaseCloudStorage _firebaseCloudStorageService;
 
-  @override
-  void initState() {
-    _firebaseCloudStorageService = FirebaseCloudStorage();
-    super.initState();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _firebaseCloudStorageService.searchPosts(widget.keyword),
+      future: CloudPostService.firebase().searchPosts(widget.keyword),
       builder: (BuildContext context, AsyncSnapshot<List<CloudPost>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:

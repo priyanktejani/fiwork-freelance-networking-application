@@ -1,8 +1,9 @@
 import 'package:fiwork/pages/order/order_success_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_custom_offer.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_order.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_custom_offer/cloud_custom_offer.dart';
+import 'package:fiwork/services/cloud/cloud_custom_offer/cloud_custom_offer_service.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:uuid/uuid.dart';
@@ -21,7 +22,6 @@ class OfferDetailsPage extends StatefulWidget {
 }
 
 class _OfferDetailsPageState extends State<OfferDetailsPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
 
   final currentUser = AuthService.firebase().currentUser!;
   String get userId => currentUser.id;
@@ -34,7 +34,6 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
 
   @override
   void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
 
 
     _projectRequirementController = TextEditingController();
@@ -67,8 +66,8 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
       createdAt: DateTime.now(),
       deliveryTime: widget.cloudOrder.deliveryTime,
     );
-    await _firebaseCloudService.createNewOrder(cloudOrder);
-    await _firebaseCloudService.deleteOffer(widget.cloudOrder.orderId);
+    await CloudOrderService.firebase().createNewOrder(cloudOrder);
+    await CloudCustomOfferService.firebase().deleteOffer(widget.cloudOrder.orderId);
   }
 
   @override

@@ -1,9 +1,10 @@
 import 'package:fiwork/pages/authentication/widget/text_field_input.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_post_comment.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post_comment.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post_service.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:fiwork/utilities/generics/get_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -17,7 +18,6 @@ class CommentsPage extends StatefulWidget {
 }
 
 class _CommentsPageState extends State<CommentsPage> {
-  late final FirebaseCloudStorage _cloudService;
   late final TextEditingController _commentController;
 
   late CloudPost cloudPost;
@@ -26,7 +26,6 @@ class _CommentsPageState extends State<CommentsPage> {
 
   @override
   void initState() {
-    _cloudService = FirebaseCloudStorage();
     _commentController = TextEditingController();
     super.initState();
   }
@@ -39,7 +38,7 @@ class _CommentsPageState extends State<CommentsPage> {
 
   Future addComment(BuildContext context) async {
     String commentId = const Uuid().v1();
-    final user = await _cloudService.getUser(userId: userId);
+    final user = await CloudUserService.firebase().getUser(userId: userId);
     final profileUrl = user!.profileUrl;
 
     CloudPostComment cloudPostComment = CloudPostComment(
@@ -52,7 +51,7 @@ class _CommentsPageState extends State<CommentsPage> {
       commentText: _commentController.text,
     );
 
-    _cloudService.addComment(cloudPostComment);
+     CloudPostService.firebase().createNewComment(cloudPostComment);
   }
 
   @override
@@ -96,7 +95,7 @@ class _CommentsPageState extends State<CommentsPage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
         child: StreamBuilder(
-          stream: _cloudService.allComment(cloudPost),
+          stream: CloudPostService.firebase().allPostComment(cloudPost),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.active:
@@ -210,7 +209,7 @@ class _CommentsPageState extends State<CommentsPage> {
                   ),
                 ),
                 child: FutureBuilder(
-                  future: _cloudService.getUser(userId: userId),
+                  future: CloudUserService.firebase().getUser(userId: userId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final cloudUser = snapshot.data as CloudUser;

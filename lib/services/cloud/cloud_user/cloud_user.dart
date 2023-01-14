@@ -26,7 +26,7 @@ class CloudUser {
     required this.follower,
   });
 
-  CloudUser.fromJson(Map<String, dynamic> json)
+  CloudUser.fromMap(Map<String, dynamic> json)
       : userId = json[userIdFieldName],
         email = json[emailFieldName],
         fullName = json[fullNameFieldName],
@@ -48,7 +48,7 @@ class CloudUser {
         following = snapshot.data()[followingFieldName] as List,
         follower = snapshot.data()[followerFieldName] as List;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         userIdFieldName: userId,
         emailFieldName: email,
         fullNameFieldName: fullName,

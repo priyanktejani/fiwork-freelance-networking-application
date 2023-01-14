@@ -15,3 +15,5 @@ class CouldNotUpdateNoteException extends CloudStorageException {}
 
 // D in CRUD
 class CouldNotDeleteNoteException extends CloudStorageException {}
+
+class OrderNotFoundException extends CloudStorageException {}

@@ -1,7 +1,7 @@
 import 'package:fiwork/pages/activity/offer_details.page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_custom_offer.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_custom_offer/cloud_custom_offer.dart';
+import 'package:fiwork/services/cloud/cloud_custom_offer/cloud_custom_offer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,23 +14,16 @@ class OffersTab extends StatefulWidget {
 }
 
 class _OffersTabState extends State<OffersTab> {
-  late final FirebaseCloudStorage _firebaseCloudService;
 
   final currentUser = AuthService.firebase().currentUser!;
   String get userId => currentUser.id;
 
   @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: widget.isReceivedOrder
-          ? _firebaseCloudService.userAllReceivedOffers(userId)
-          : _firebaseCloudService.userAllSentOffers(userId),
+          ? CloudCustomOfferService.firebase().userAllReceivedOffers(userId)
+          : CloudCustomOfferService.firebase().userAllSentOffers(userId),
       builder: (BuildContext context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:

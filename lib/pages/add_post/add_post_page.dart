@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post_service.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:fiwork/services/storage/firebase_file_storage.dart';
 import 'package:fiwork/utilities/picker/pick_image.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class AddPostPage extends StatefulWidget {
 }
 
 class _AddPostPageState extends State<AddPostPage> {
-  late final FirebaseCloudStorage _cloudService;
   late final TextEditingController _captionController;
 
   final currentUser = AuthService.firebase().currentUser!;
@@ -28,7 +28,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
   @override
   void initState() {
-    _cloudService = FirebaseCloudStorage();
     _captionController = TextEditingController();
     super.initState();
   }
@@ -42,7 +41,7 @@ class _AddPostPageState extends State<AddPostPage> {
       );
 
       String postId = const Uuid().v1();
-      final user = await _cloudService.getUser(userId: userId);
+      final user = await CloudUserService.firebase().getUser(userId: userId);
       final profileUrl = user!.profileUrl;
 
       CloudPost cloudPost = CloudPost(
@@ -56,8 +55,7 @@ class _AddPostPageState extends State<AddPostPage> {
         likes: const [],
         caption: _captionController.text,
       );
-
-      _cloudService.createNewPost(cloudPost);
+      CloudPostService.firebase().createNewPost(cloudPost);
     }
   }
 
@@ -176,7 +174,7 @@ class _AddPostPageState extends State<AddPostPage> {
           ),
           SliverToBoxAdapter(
             child: FutureBuilder(
-              future: _cloudService.getUser(userId: userId),
+              future: CloudUserService.firebase().getUser(userId: userId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final cloudUser = snapshot.data as CloudUser;

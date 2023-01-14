@@ -1,7 +1,7 @@
 import 'package:fiwork/pages/activity/order_details.page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_order.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,23 +14,15 @@ class OrdersTab extends StatefulWidget {
 }
 
 class _OrdersTabState extends State<OrdersTab> {
-  late final FirebaseCloudStorage _firebaseCloudService;
-
   final currentUser = AuthService.firebase().currentUser!;
   String get userId => currentUser.id;
-
-  @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: widget.isPlacedOrder
-          ? _firebaseCloudService.userAllPlacedOrders(userId)
-          : _firebaseCloudService.userAllReceivedOrders(userId),
+          ? CloudOrderService.firebase().userAllPlacedOrders(userId)
+          : CloudOrderService.firebase().userAllReceivedOrders(userId),
       builder: (BuildContext context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:

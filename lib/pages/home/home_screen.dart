@@ -2,8 +2,8 @@ import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/enums/menu_actions.dart';
 import 'package:fiwork/gigs.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final FirebaseCloudStorage _postService;
   final PageController pageController = PageController(viewportFraction: 0.75);
   int currentPage = 0;
 
@@ -25,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _postService = FirebaseCloudStorage();
     pageController.addListener(() {
       int position = pageController.page!.round();
       if (currentPage != position) {
@@ -115,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           //
           StreamBuilder(
-            stream: _postService.allPosts(),
+            stream: CloudPostService.firebase().allPosts(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
@@ -147,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             feedText: post.caption,
                             feedImage: post.postUrl,
                             like: () {
-                              _postService.likePost(
+                              CloudPostService.firebase().likePost(
                                 post.postId,
                                 post.userId,
                                 post.likes,
@@ -167,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               if (item == PostMenu.edit) {
                               } else {
                                 // delete post
-                                _postService.deletePost(post.postId);
+                                CloudPostService.firebase().deletePost(post.postId);
                               }
                             },
                           ),

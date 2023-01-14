@@ -1,6 +1,6 @@
 import 'package:fiwork/pages/gig_details/gig_details_page.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_gig.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -13,18 +13,13 @@ class GigCategoryTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<GigCategoryTab> {
-  late final FirebaseCloudStorage _firebaseCloudService;
 
-  @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _firebaseCloudService.gigsByCategory(widget.category),
+      stream: CloudGigService.firebase().gigsByCategory(widget.category),
       builder: (BuildContext context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:

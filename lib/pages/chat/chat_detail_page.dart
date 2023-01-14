@@ -1,9 +1,10 @@
 import 'package:fiwork/pages/authentication/widget/text_field_input.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_chat_user.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_message.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_message/cloud_chat.dart';
+import 'package:fiwork/services/cloud/cloud_message/cloud_message.dart';
+import 'package:fiwork/services/cloud/cloud_message/cloud_message_service.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,6 @@ class ChatDetailPage extends StatefulWidget {
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   late final TextEditingController _messageTextController;
 
   final currentUser = AuthService.firebase().currentUser!;
@@ -27,7 +27,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   @override
   void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
     _messageTextController = TextEditingController();
     super.initState();
   }
@@ -39,12 +38,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   Future<void> getExistingUser() async {
-    await _firebaseCloudService.getUser(userId: userId);
+    await CloudUserService.firebase().getUser(userId: userId);
   }
 
   Future<void> addMessage() async {
     String messageId = const Uuid().v1();
-    final existingUser = await _firebaseCloudService.getUser(userId: userId);
+    final existingUser = await CloudUserService.firebase().getUser(userId: userId);
 
     CloudMessage cloudMessage = CloudMessage(
       messageId: messageId,
@@ -53,28 +52,28 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       sendAt: DateTime.now(),
     );
 
-    CloudChatUser cloudChatUserSender = CloudChatUser(
+    CloudChat cloudChatUserSender = CloudChat(
       userId: widget.sendToUser.userId,
       profileUrl: widget.sendToUser.profileUrl!,
       userName: widget.sendToUser.userName,
       fullNmae: widget.sendToUser.fullName,
     );
 
-    _firebaseCloudService.addMessage(
+    CloudMessageService.firebase().createNewMessage(
       existingUser!,
       widget.sendToUser,
       cloudChatUserSender,
       cloudMessage,
     );
 
-    CloudChatUser cloudChatUserReceiver = CloudChatUser(
+    CloudChat cloudChatUserReceiver = CloudChat(
       userId: existingUser.userId,
       profileUrl: existingUser.profileUrl!,
       userName: existingUser.userName,
       fullNmae: existingUser.fullName,
     );
 
-    _firebaseCloudService.addMessage(
+    CloudMessageService.firebase().createNewMessage(
       widget.sendToUser,
       existingUser,
       cloudChatUserReceiver,
@@ -94,7 +93,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       ),
       backgroundColor: Colors.black,
       body: FutureBuilder(
-        future: _firebaseCloudService.getUser(userId: userId),
+        future: CloudUserService.firebase().getUser(userId: userId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -102,7 +101,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               if (snapshot.hasData) {
                 final CloudUser existingUser = snapshot.data as CloudUser;
                 return StreamBuilder(
-                  stream: _firebaseCloudService.userAllMessages(
+                  stream: CloudMessageService.firebase().userAllMessages(
                     existingUser,
                     widget.sendToUser,
                   ),

@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:fiwork/pages/activity/view_file_web_view.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_order.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order_service.dart';
 import 'package:fiwork/services/storage/firebase_file_storage.dart';
 import 'package:fiwork/utilities/picker/pick_file.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,6 @@ class OrderDetailsPage extends StatefulWidget {
 }
 
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   late final TextEditingController _deliveryMessageController;
 
   final currentUser = AuthService.firebase().currentUser!;
@@ -37,7 +36,6 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
   @override
   void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
     _deliveryMessageController = TextEditingController();
     isDelivered = widget.cloudOrder.isdelivered;
     isDeliveryAccepted = widget.cloudOrder.isDeliveryAccepted;
@@ -61,7 +59,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         fileName: _file!.name,
       );
     }
-    _firebaseCloudService.updateOrder(
+    CloudOrderService.firebase().updateOrder(
       widget.cloudOrder.orderId,
       filePathUrl,
       _deliveryMessageController.text,
@@ -73,7 +71,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   }
 
   Future<void> acceptDelivery() async {
-    _firebaseCloudService.acceptDelivery(
+    CloudOrderService.firebase().acceptDelivery(
       widget.cloudOrder.orderId,
       true,
     );
@@ -362,7 +360,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                               ),
                             ),
                             onPressed: () {
-                              _firebaseCloudService.acceptOrder(
+                              CloudOrderService.firebase().acceptOrder(
                                 widget.cloudOrder.orderId,
                                 true,
                               );
@@ -390,7 +388,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                             ),
                           ),
                           onPressed: () {
-                            _firebaseCloudService.rejectOrder(
+                            CloudOrderService.firebase().rejectOrder(
                               widget.cloudOrder.orderId,
                               false,
                             );

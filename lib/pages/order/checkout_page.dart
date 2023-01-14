@@ -1,8 +1,9 @@
 import 'package:fiwork/pages/order/order_success_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_gig.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_order.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order.dart';
+import 'package:fiwork/services/cloud/cloud_order/cloud_order_service.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:uuid/uuid.dart';
@@ -16,7 +17,7 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPage extends State<CheckoutPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
+
   late final TextEditingController _projectRequirementController;
 
   final currentUser = AuthService.firebase().currentUser!;
@@ -24,7 +25,6 @@ class _CheckoutPage extends State<CheckoutPage> {
 
   @override
   void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
     _projectRequirementController = TextEditingController();
     super.initState();
   }
@@ -38,7 +38,7 @@ class _CheckoutPage extends State<CheckoutPage> {
   Future<void> createOrder() async {
     String orderId = const Uuid().v1();
 
-    final employer = await _firebaseCloudService.getUser(userId: employerId);
+    final employer = await CloudUserService.firebase().getUser(userId: employerId);
 
     CloudOrder cloudOrder = CloudOrder(
       orderId: orderId,
@@ -58,7 +58,7 @@ class _CheckoutPage extends State<CheckoutPage> {
       createdAt: DateTime.now(),
       deliveryTime: widget.cloudGig.deliveryTime,
     );
-    _firebaseCloudService.createNewOrder(cloudOrder);
+    CloudOrderService.firebase().createNewOrder(cloudOrder);
   }
 
   @override

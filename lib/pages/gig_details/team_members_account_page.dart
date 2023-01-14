@@ -1,7 +1,7 @@
 import 'package:fiwork/pages/profile/profile_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 
 class TeamMembersAccountPage extends StatefulWidget {
@@ -13,16 +13,9 @@ class TeamMembersAccountPage extends StatefulWidget {
 }
 
 class _TeamMembersAccountPageState extends State<TeamMembersAccountPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   final currentUser = AuthService.firebase().currentUser!;
 
   String get userId => currentUser.id;
-
-  @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +27,7 @@ class _TeamMembersAccountPageState extends State<TeamMembersAccountPage> {
         title: const Text('Gig Members'),
       ),
       body: FutureBuilder(
-        future: _firebaseCloudService.getUser(userId: userId),
+        future: CloudUserService.firebase().getUser(userId: userId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:

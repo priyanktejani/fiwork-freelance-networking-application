@@ -1,6 +1,6 @@
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_post.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
+import 'package:fiwork/services/cloud/cloud_post/cloud_post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -12,20 +12,13 @@ class PostsTab extends StatefulWidget {
 }
 
 class _PostsTabState extends State<PostsTab> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   final currentUser = AuthService.firebase().currentUser!;
   String get userId => currentUser.id;
 
   @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _firebaseCloudService.userAllPosts(userId),
+      stream: CloudPostService.firebase().userAllPosts(userId),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:

@@ -1,8 +1,9 @@
 import 'package:fiwork/pages/profile/profile_page.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_custom_offer.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_gig.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_custom_offer/cloud_custom_offer.dart';
+import 'package:fiwork/services/cloud/cloud_custom_offer/cloud_custom_offer_service.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:uuid/uuid.dart';
@@ -16,7 +17,6 @@ class SendCustomeOfferPage extends StatefulWidget {
 }
 
 class _SendCustomeOfferPageState extends State<SendCustomeOfferPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   late final TextEditingController _specificationTitleController;
   late final TextEditingController _shortDetailController;
   late final TextEditingController _gigStartingPriceController;
@@ -30,7 +30,6 @@ class _SendCustomeOfferPageState extends State<SendCustomeOfferPage> {
 
   @override
   void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
     _specificationTitleController = TextEditingController();
     _shortDetailController = TextEditingController();
     _gigStartingPriceController = TextEditingController();
@@ -117,7 +116,7 @@ class _SendCustomeOfferPageState extends State<SendCustomeOfferPage> {
                     color: Colors.transparent,
                   ),
                   FutureBuilder(
-                    future: _firebaseCloudService.searchAccounts(keyword),
+                    future: CloudUserService.firebase().searchUsers(keyword),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<CloudUser>> snapshot) {
                       switch (snapshot.connectionState) {
@@ -463,7 +462,7 @@ class _SendCustomeOfferPageState extends State<SendCustomeOfferPage> {
       createdAt: DateTime.now(),
       deliveryTime: widget.cloudGig.deliveryTime,
     );
-    _firebaseCloudService.createCustomOffer(cloudCustomOffer);
+    CloudCustomOfferService.firebase().createNewCustomOffer(cloudCustomOffer);
   }
 
   @override

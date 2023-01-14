@@ -4,10 +4,10 @@ import 'package:fiwork/pages/add_post/add_post_page.dart';
 import 'package:fiwork/pages/chat/chat_detail_page.dart';
 import 'package:fiwork/pages/profile/edit_profile_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
 import 'package:fiwork/pages/profile/tabs/posts_tab.dart';
 import 'package:fiwork/pages/profile/tabs/services_tab.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -21,7 +21,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-  late final FirebaseCloudStorage _firebaseCloudService;
 
   final currentUser = AuthService.firebase().currentUser!;
   String get currentUserId => currentUser.id;
@@ -29,7 +28,6 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   void initState() {
     super.initState();
-    _firebaseCloudService = FirebaseCloudStorage();
     tabController = TabController(length: 3, vsync: this);
     tabController.addListener(() {
       // setState(() {});
@@ -43,16 +41,16 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   Future<bool> follow(CloudUser followUser) async {
-    final user = await _firebaseCloudService.getUser(userId: currentUserId);
-    final res = await _firebaseCloudService.followUser(user!, followUser);
+    final user = await CloudUserService.firebase().getUser(userId: currentUserId);
+    final res = await CloudUserService.firebase().followUser(user!, followUser);
 
     setState(() {});
     return res;
   }
 
   Future<String> isfollowing(CloudUser followUser) async {
-    final user = await _firebaseCloudService.getUser(userId: currentUserId);
-    final res = await _firebaseCloudService.isFollowing(user!, followUser);
+    final user = await CloudUserService.firebase().getUser(userId: currentUserId);
+    final res = await CloudUserService.firebase().isFollowing(user!, followUser);
     if (res) {
       return 'following';
     } else {
@@ -64,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage>
   Widget build(BuildContext context) {
     return FutureBuilder(
       future:
-          _firebaseCloudService.getUser(userId: widget.userId ?? currentUserId),
+          CloudUserService.firebase().getUser(userId: widget.userId ?? currentUserId),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:

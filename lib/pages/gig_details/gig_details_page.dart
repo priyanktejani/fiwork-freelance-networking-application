@@ -2,9 +2,9 @@ import 'package:fiwork/pages/gig_details/send_custom_offer.dart';
 import 'package:fiwork/pages/gig_details/team_members_account_page.dart';
 import 'package:fiwork/pages/order/checkout_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_gig.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -20,7 +20,6 @@ class GigDetailsPage extends StatefulWidget {
 }
 
 class _GigDetailsPageState extends State<GigDetailsPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
 
   final currentUser = AuthService.firebase().currentUser!;
   String get userId => currentUser.id;
@@ -30,7 +29,6 @@ class _GigDetailsPageState extends State<GigDetailsPage> {
 
   @override
   void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
     getAllTeamMembers();
     super.initState();
   }
@@ -42,7 +40,7 @@ class _GigDetailsPageState extends State<GigDetailsPage> {
     final teamMembersId = widget.cloudGig.teamMembers;
     for (String memberId in teamMembersId) {
       CloudUser? cloudUser =
-          await _firebaseCloudService.getUser(userId: memberId);
+          await CloudUserService.firebase().getUser(userId: memberId);
       if (cloudUser != null) {
         teamMembers.add(cloudUser);
       }

@@ -1,8 +1,9 @@
 import 'package:fiwork/pages/chat/chat_detail_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_chat_user.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_message/cloud_chat.dart';
+import 'package:fiwork/services/cloud/cloud_message/cloud_message_service.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -13,20 +14,13 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   final currentUser = AuthService.firebase().currentUser!;
   String get userId => currentUser.id;
 
   @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _firebaseCloudService.getUser(userId: userId),
+      future: CloudUserService.firebase().getUser(userId: userId),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
@@ -77,14 +71,14 @@ class _ChatPageState extends State<ChatPage> {
                 body: Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: FutureBuilder(
-                    future: _firebaseCloudService.userAllChats(user),
+                    future: CloudMessageService.firebase().userAllChats(user),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
                         case ConnectionState.done:
                           if (snapshot.hasData) {
                             final allChatsUsers =
-                                snapshot.data as List<CloudChatUser>;
+                                snapshot.data as List<CloudChat>;
                             return ListView.builder(
                               itemCount: allChatsUsers.length,
                               itemBuilder: (context, index) {
@@ -94,7 +88,7 @@ class _ChatPageState extends State<ChatPage> {
                                   child: InkWell(
                                     onTap: () async {
                                       final sendToUser =
-                                          await _firebaseCloudService.getUser(
+                                          await CloudUserService.firebase().getUser(
                                         userId: chatsUser.userId,
                                       );
                                       if (!mounted) return;

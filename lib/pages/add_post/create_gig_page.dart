@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:fiwork/pages/profile/profile_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_gig.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig.dart';
+import 'package:fiwork/services/cloud/cloud_gig/cloud_gig_service.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:fiwork/services/storage/firebase_file_storage.dart';
 import 'package:fiwork/utilities/picker/pick_image.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class CreateGigPage extends StatefulWidget {
 }
 
 class _CreateGigPageState extends State<CreateGigPage> {
-  late final FirebaseCloudStorage _firebaseCloudService;
   // declare a GlobalKey
   final _formKey = GlobalKey<FormState>();
 
@@ -63,7 +63,6 @@ class _CreateGigPageState extends State<CreateGigPage> {
     _gigStartingPriceController = TextEditingController();
     _gigDeliveryTimeController = TextEditingController();
 
-    _firebaseCloudService = FirebaseCloudStorage();
     super.initState();
   }
 
@@ -171,7 +170,7 @@ class _CreateGigPageState extends State<CreateGigPage> {
                     color: Colors.transparent,
                   ),
                   FutureBuilder(
-                    future: _firebaseCloudService.searchAccounts(keyword),
+                    future: CloudUserService.firebase().searchUsers(keyword),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<CloudUser>> snapshot) {
                       switch (snapshot.connectionState) {
@@ -523,7 +522,7 @@ class _CreateGigPageState extends State<CreateGigPage> {
         createdAt: DateTime.now(),
       );
 
-      _firebaseCloudService.createNewGig(cloudGig);
+      CloudGigService.firebase().createNewGig(cloudGig);
     }
   }
 

@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/pages/authentication/widget/text_field_input.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:fiwork/services/storage/firebase_file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +17,6 @@ class SignupDetailPage extends StatefulWidget {
 }
 
 class _SignupDetailPageState extends State<SignupDetailPage> {
-  late final FirebaseCloudStorage _cloudService;
   late final TextEditingController _fullNameController;
   late final TextEditingController _userNameController;
   late final TextEditingController _professionController;
@@ -40,7 +39,6 @@ class _SignupDetailPageState extends State<SignupDetailPage> {
 
   @override
   void initState() {
-    _cloudService = FirebaseCloudStorage();
     _fullNameController = TextEditingController();
     _userNameController = TextEditingController();
     _professionController = TextEditingController();
@@ -167,7 +165,7 @@ class _SignupDetailPageState extends State<SignupDetailPage> {
                             following: const [],
                             follower: const [],
                           );
-                          _cloudService.createNewUser(cloudUser);
+                          CloudUserService.firebase().createNewUser(cloudUser);
 
                           if(!mounted) return;
                             Navigator.of(context).popAndPushNamed(

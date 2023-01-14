@@ -1,6 +1,6 @@
 import 'package:fiwork/pages/profile/profile_page.dart';
-import 'package:fiwork/services/cloud/cloud_models/cloud_user.dart';
-import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
+import 'package:fiwork/services/cloud/cloud_user/cloud_user_service.dart';
 import 'package:flutter/material.dart';
 
 class AccountsTab extends StatefulWidget {
@@ -12,18 +12,10 @@ class AccountsTab extends StatefulWidget {
 }
 
 class _AccountsTabState extends State<AccountsTab> {
-  late final FirebaseCloudStorage _firebaseCloudService;
-
-  @override
-  void initState() {
-    _firebaseCloudService = FirebaseCloudStorage();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _firebaseCloudService.searchAccounts(widget.keyword),
+      future: CloudUserService.firebase().searchUsers(widget.keyword),
       builder: (BuildContext context, AsyncSnapshot<List<CloudUser>> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
