@@ -1,4 +1,3 @@
-// 2
 import 'package:fiwork/services/cloud/cloud_user/cloud_user.dart';
 
 abstract class CloudUserProvider {
@@ -8,7 +7,6 @@ abstract class CloudUserProvider {
     required String userId,
   });
 
-  // Search users
   Future<List<CloudUser>> searchUsers(String keyword);
 
   Future<bool> followUser(CloudUser currentUser, CloudUser followUser);

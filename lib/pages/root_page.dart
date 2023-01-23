@@ -19,7 +19,7 @@ class _RootPageState extends State<RootPage> {
     const SearchPage(),
     const ActivityPage(),
     const ProfilePage(),
-    const GigsPage(),
+    const GigsPage(selectedTab: 0,),
   ];
 
   @override

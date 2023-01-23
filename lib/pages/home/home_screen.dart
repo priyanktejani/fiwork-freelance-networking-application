@@ -1,6 +1,8 @@
 import 'package:fiwork/constants/routes.dart';
 import 'package:fiwork/enums/menu_actions.dart';
 import 'package:fiwork/gigs.dart';
+import 'package:fiwork/pages/gig/gigs_page.dart';
+import 'package:fiwork/pages/profile/profile_page.dart';
 import 'package:fiwork/services/auth/auth_service.dart';
 import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
 import 'package:fiwork/services/cloud/cloud_post/cloud_post_service.dart';
@@ -138,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           heightFactor: 0.9,
                           alignment: Alignment.topCenter,
                           child: PostCard(
+                            userId: post.userId,
                             userName: post.fullName,
                             userImage: post.profileUrl,
                             profession: post.profession,
@@ -165,7 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               if (item == PostMenu.edit) {
                               } else {
                                 // delete post
-                                CloudPostService.firebase().deletePost(post.postId);
+                                CloudPostService.firebase().deletePost(
+                                  post.postId,
+                                );
                               }
                             },
                           ),
@@ -188,8 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class GigsCard extends StatelessWidget {
-  const GigsCard({Key? key, this.active, this.index, this.gigs})
-      : super(key: key);
+  const GigsCard({
+    Key? key,
+    this.active,
+    this.index,
+    this.gigs,
+  }) : super(key: key);
 
   final bool? active;
   final int? index;
@@ -201,123 +210,127 @@ class GigsCard extends StatelessWidget {
     final double offset = active! ? 4 : 0;
     final double top = active! ? 0 : 39;
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOutQuint,
-      margin: EdgeInsets.only(
-        top: top,
-        bottom: 0,
-        right: 15.5,
-        left: active! ? 16.0 : 0,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        color: gigs!.startColor!,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white.withOpacity(0.1),
-            blurRadius: blur,
-            offset: Offset(0, offset),
-          ),
-        ],
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/${gigs!.recipeImage}'),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(32),
-              gradient: LinearGradient(
-                colors: [
-                  gigs!.startColor!,
-                  gigs!.endColor!.withOpacity(0.3),
-                ],
-                begin: Alignment.bottomRight,
-                end: Alignment.topLeft,
-                tileMode: TileMode.clamp,
-                stops: const [0.3, 0.6],
-              ),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GigsPage(
+              selectedTab: gigs!.currentIndex,
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.only(
-                left: 24,
-                right: 16,
-                top: 10,
-              ),
-              height: 87,
+        );
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOutQuint,
+        margin: EdgeInsets.only(
+          top: top,
+          bottom: 0,
+          right: 15.5,
+          left: active! ? 16.0 : 0,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          color: gigs!.startColor!,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.1),
+              blurRadius: blur,
+              offset: Offset(0, offset),
+            ),
+          ],
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/${gigs!.gigImage}'),
+          ),
+        ),
+        child: Stack(
+          children: [
+            Container(
               decoration: BoxDecoration(
-                  color: gigs!.startColor,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(32),
-                    bottomRight: Radius.circular(32),
-                  )),
-              child: Text(
-                gigs!.recipeName,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                borderRadius: BorderRadius.circular(32),
+                gradient: LinearGradient(
+                  colors: [
+                    gigs!.startColor!,
+                    gigs!.endColor!.withOpacity(0.3),
+                  ],
+                  begin: Alignment.bottomRight,
+                  end: Alignment.topLeft,
+                  tileMode: TileMode.clamp,
+                  stops: const [0.3, 0.6],
                 ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 84.75,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.5,
-                      vertical: 5,
-                    ),
-                    height: 24,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                    ),
-                    child: Text(
-                      gigs!.category,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: gigs!.startColor,
-                      ),
-                    ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 24,
+                  right: 16,
+                  top: 10,
+                ),
+                height: 87,
+                decoration: BoxDecoration(
+                    color: gigs!.startColor,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(32),
+                      bottomRight: Radius.circular(32),
+                    )),
+                child: Text(
+                  gigs!.gigInfo,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
-                  Row(
-                    children: const [
-                      // Image.asset('assets/icons/messenger.png'),
-                      SizedBox(
-                        width: 8.65,
-                      ),
-                      // Image.asset('assets/icons/messenger.png'),
-                    ],
-                  )
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 84.75,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.5,
+                        vertical: 5,
+                      ),
+                      height: 24,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                      ),
+                      child: Text(
+                        gigs!.category,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: gigs!.startColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class PostCard extends StatelessWidget {
+  final String userId;
   final String userName;
   final String userImage;
   final String profession;
@@ -332,6 +345,7 @@ class PostCard extends StatelessWidget {
   final Function(PostMenu)? postMenu;
   PostCard({
     Key? key,
+    required this.userId,
     required this.userName,
     required this.userImage,
     required this.profession,
@@ -381,15 +395,27 @@ class PostCard extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Container(
-                        width: 42,
-                        height: 42,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(userImage),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePage(
+                                userId: userId,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(userImage),
+                            ),
                           ),
                         ),
                       ),
@@ -405,7 +431,9 @@ class PostCard extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Text(profession)
+                          Text(
+                            profession,
+                          )
                         ],
                       ),
                     ],

@@ -3,13 +3,15 @@ import 'package:fiwork/pages/gig/tabs/home_tab.dart';
 import 'package:flutter/material.dart';
 
 class GigsPage extends StatefulWidget {
-  const GigsPage({super.key});
+  const GigsPage({super.key, required this.selectedTab,});
+  final int selectedTab;
 
   @override
   State<GigsPage> createState() => _GigsPageState();
 }
 
 class _GigsPageState extends State<GigsPage> {
+
   final List<String> tabs = <String>[
     'Home',
     'Graphics & Design',
@@ -22,14 +24,12 @@ class _GigsPageState extends State<GigsPage> {
     'Lifestyle',
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: widget.selectedTab,
       length: tabs.length,
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -111,6 +111,7 @@ class _GigsPageState extends State<GigsPage> {
               GigCategoryTab(
                 category: 'Lifestyle',
               ),
+              
             ],
           ),
         ),

@@ -14,18 +14,12 @@ class CloudMessageService implements CloudMessageProvider {
       CloudMessageService(FirebaseCloudMessageProvider());
 
   @override
-  Future<void> createNewMessage(
-    CloudUser currentUser,
-    CloudUser sendToUser,
-    CloudChat cloudChatUser,
-    CloudMessage cloudMessage,
-  ) =>
-      provider.createNewMessage(
-        currentUser,
-        sendToUser,
-        cloudChatUser,
-        cloudMessage,
-      );
+  Future<void> createNewMessage
+      (CloudUser currentUser, CloudUser sendToUser,
+      CloudChat cloudChatUser, CloudMessage cloudMessage,) =>
+      provider.createNewMessage
+        (currentUser, sendToUser,
+        cloudChatUser, cloudMessage,);
 
   @override
   Future<List<CloudChat>> userAllChats(CloudUser currentUser) =>

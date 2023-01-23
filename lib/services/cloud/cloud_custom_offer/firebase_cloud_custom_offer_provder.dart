@@ -34,9 +34,7 @@ class FirebaseCloudCustomOfferProvider extends CloudCustomOfferProvider {
   Stream<Iterable<CloudCustomOffer>> userAllReceivedOffers(String userId) {
      return firebaseCloudStorage.firebaseFirestoreInstance()
         .collection(_offers)
-        .where('employer_id', isEqualTo: userId)
-        .snapshots()
-        .map(
+        .where('employer_id', isEqualTo: userId).snapshots().map(
           (event) => event.docs.map(
             (doc) => CloudCustomOffer.fromSnapshot(doc),
           ),
@@ -45,11 +43,8 @@ class FirebaseCloudCustomOfferProvider extends CloudCustomOfferProvider {
 
   @override
   Stream<Iterable<CloudCustomOffer>> userAllSentOffers(String userId) {
-    return firebaseCloudStorage.firebaseFirestoreInstance()
-        .collection(_offers)
-        .where('user_id', isEqualTo: userId)
-        .snapshots()
-        .map(
+    return firebaseCloudStorage.firebaseFirestoreInstance().collection(_offers)
+        .where('user_id', isEqualTo: userId).snapshots().map(
           (event) => event.docs.map(
             (doc) => CloudCustomOffer.fromSnapshot(doc),
           ),

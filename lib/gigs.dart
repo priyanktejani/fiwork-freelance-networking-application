@@ -1,92 +1,86 @@
 import 'package:flutter/material.dart';
 
 class Gigs {
-  Gigs(
-      {this.recipeName = '',
-      this.recipeImage = '',
-      this.recipeMaker = '',
-      this.category = '',
-      this.startColor,
-      this.endColor});
+  Gigs({
+    this.gigInfo = '',
+    this.gigImage = '',
+    this.category = '',
+    this.startColor,
+    this.endColor,
+    this.currentIndex = 0,
+  });
 
-  String recipeName;
-  String recipeImage;
-  String recipeMaker;
+  String gigInfo;
+  String gigImage;
   String category;
   Color? startColor;
   Color? endColor;
+  int currentIndex;
 }
 
 var gigs = [
   Gigs(
-    recipeName: 'Wordpress, Game Development, Mobile Apps',
-    recipeImage: 'programming.jpg',
-    recipeMaker: 'Foodie Yuki',
+    gigInfo: 'Wordpress, Game Development, Mobile Apps',
+    gigImage: 'programming.jpg',
     category: 'Programming & Tech',
-    startColor: const Color(0xFF212121),
+    currentIndex: 6,
+    startColor: const Color(0xFF424242),
     endColor: const Color(0xFF424242),
   ),
   Gigs(
-    recipeName: 'Logo & Brand Identity, Art & Illustration',
-    recipeImage: 'graphic-design.jpg',
-    recipeMaker: 'Marianne Turner',
+    gigInfo: 'Logo & Brand Identity, Art & Illustration',
+    gigImage: 'graphic-design.jpg',
     category: 'Graphics & Design',
+    currentIndex: 1,
     startColor: const Color(0xFF621e14),
     endColor: const Color(0xFFd13b10),
   ),
   Gigs(
-    recipeName: 'Marketing Strategy, Social Media Marketing, Local SEO',
-    recipeImage: 'digital-marketing.jpg',
-    recipeMaker: 'Jennifer Joyce',
+    gigInfo: 'Marketing Strategy, Social Media Marketing, Local SEO',
+    gigImage: 'digital-marketing.jpg',
     category: 'Digital Marketing',
+    currentIndex: 2,
     startColor: const Color(0xFFe18b41),
     endColor: const Color(0xFFc7c73d),
   ),
   Gigs(
-    recipeName: 'Easy classic lasagne',
-    recipeImage: 'img-classic-lasange.webp',
-    recipeMaker: 'Angela Boggiano',
+    gigInfo: 'Content Writing, Editing, Career Writing, Storytelling',
+    gigImage: 'writing-&-translation.jpg',
     category: 'Writing & Translation',
+    currentIndex: 3,
     startColor: const Color(0xFFaf781d),
     endColor: const Color(0xFFd6a651),
   ),
   Gigs(
-    recipeName: 'Easy teriyaki chicken',
-    recipeImage: 'programming.jpg',
-    recipeMaker: 'Esther Clark',
+    gigInfo: 'Editing, Post-Production, Animation, Social & Marketing Videos',
+    gigImage: 'video-&-Animation.jpg',
     category: 'Video & Animation',
-    startColor: const Color(0xFF9a9d9a),
-    endColor: const Color(0xFFb9b2b5),
+    currentIndex: 4,
+    startColor: const Color(0xFF424242),
+    endColor: const Color(0xFF424242),
   ),
   Gigs(
-    recipeName: 'Easy chocolate fudge cake',
-    recipeImage: 'programming.jpg',
-    recipeMaker: 'Member recipe by misskay',
+    gigInfo: 'Music Production, Audio Engineering, Voice Over & Streaming',
+    gigImage: 'music-&-audio.jpg',
     category: 'Music & Audio',
+    currentIndex: 5,
     startColor: const Color(0xFF2e0f07),
     endColor: const Color(0xFF653424),
   ),
   Gigs(
-    recipeName: 'One-pan spaghetti with nduja, fennel & olives',
-    recipeImage: 'programming.jpg',
-    recipeMaker: 'Cassie Best',
-    category: 'Programming & Tech',
-    startColor: const Color(0xFF8b1d07),
-    endColor: const Color(0xFFee882d),
-  ),
-  Gigs(
-    recipeName: 'Easy pancakes',
-    recipeImage: 'programming.jpg',
-    recipeMaker: 'Cassie Best',
+    gigInfo: 'Accounting, Administrative, Sales & Customer Care',
+    gigImage: 'business.jpg',
     category: 'Business',
-    startColor: const Color(0xFFa1783c),
-    endColor: const Color(0xFFf3dc37),
+    currentIndex: 7,
+    startColor: const Color(0xFF212121),
+    endColor: const Color(0xFF424242),
   ),
   Gigs(
-    recipeName: 'Easy chicken fajitas',
-    recipeImage: 'programming.jpg',
-    recipeMaker: 'Steven Morris',
+    gigInfo:
+        'Fashion & Style, Life Coaching, Leisure & Hobbies, Wellness & Fitness',
+    gigImage: 'lifestyle.jpg',
     category: 'Lifestyle',
+    currentIndex: 8,
     startColor: const Color(0xFF3e4824),
     endColor: const Color(0xFF5da6a6),
   ),

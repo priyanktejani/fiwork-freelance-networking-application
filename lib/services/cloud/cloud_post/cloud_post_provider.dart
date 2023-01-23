@@ -3,6 +3,7 @@ import 'package:fiwork/services/cloud/cloud_post/cloud_post.dart';
 import 'package:fiwork/services/cloud/cloud_post/cloud_post_comment.dart';
 
 abstract class CloudPostProvider {
+
   Future<void> createNewPost(CloudPost cloudPost);
 
   Future<String> deletePost(String postId);
@@ -20,4 +21,5 @@ abstract class CloudPostProvider {
   Future<void> createNewComment(CloudPostComment cloudPostComment);
 
   Stream<Iterable<CloudPostComment>> allPostComment(CloudPost cloudPost);
+
 }

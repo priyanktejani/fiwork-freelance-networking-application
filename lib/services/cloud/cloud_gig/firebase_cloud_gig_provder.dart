@@ -1,5 +1,3 @@
-// 3
-
 import 'package:fiwork/services/cloud/cloud_gig/cloud_gig.dart';
 import 'package:fiwork/services/cloud/cloud_gig/cloud_gig_provider.dart';
 import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
@@ -79,11 +77,13 @@ class FirebaseCloudGigProvider extends CloudGigProvider {
   }
 
   @override
-  Stream<Iterable<CloudGig>> allGigs() =>
-      firebaseCloudStorage
-        .firebaseFirestoreInstance().collection(_gigs).snapshots().map(
-            (event) => event.docs.map(
-              (doc) => CloudGig.fromSnapshot(doc),
-            ),
-          );
+  Stream<Iterable<CloudGig>> allGigs() => firebaseCloudStorage
+      .firebaseFirestoreInstance()
+      .collection(_gigs)
+      .snapshots()
+      .map(
+        (event) => event.docs.map(
+          (doc) => CloudGig.fromSnapshot(doc),
+        ),
+      );
 }

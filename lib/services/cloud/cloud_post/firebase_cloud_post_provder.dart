@@ -6,36 +6,44 @@ import 'package:fiwork/services/cloud/cloud_post/cloud_post_provider.dart';
 import 'package:fiwork/services/cloud/firebase_cloud_storage.dart';
 
 class FirebaseCloudPostProvider extends CloudPostProvider {
-
   FirebaseCloudStorage firebaseCloudStorage = FirebaseCloudStorage();
   final _posts = 'posts';
   final _comment = 'comments';
 
   @override
   Stream<Iterable<CloudPost>> allPosts() {
-    return firebaseCloudStorage.firebaseFirestoreInstance()
-      .collection(_posts)
-      .orderBy('published_time', descending: true)
-      .snapshots()
-      .map(
-        (event) => event.docs.map(
-          (doc) => CloudPost.fromSnapshot(doc),
-        ),
-      );
+    return firebaseCloudStorage
+        .firebaseFirestoreInstance()
+        .collection(_posts)
+        .orderBy('published_time', descending: true)
+        .snapshots()
+        .map(
+          (event) => event.docs.map(
+            (doc) => CloudPost.fromSnapshot(doc),
+          ),
+        );
   }
 
   @override
   Future<void> createNewPost(CloudPost cloudPost) async {
-     await firebaseCloudStorage.firebaseFirestoreInstance().collection(_posts).doc(cloudPost.postId).set(
+    await firebaseCloudStorage
+        .firebaseFirestoreInstance()
+        .collection(_posts)
+        .doc(cloudPost.postId)
+        .set(
           cloudPost.toJson(),
         );
   }
 
   @override
   Future<String> deletePost(String postId) async {
-     String res = "Some error occurred";
+    String res = "Some error occurred";
     try {
-      await firebaseCloudStorage.firebaseFirestoreInstance().collection(_posts).doc(postId).delete();
+      await firebaseCloudStorage
+          .firebaseFirestoreInstance()
+          .collection(_posts)
+          .doc(postId)
+          .delete();
       res = 'success';
     } catch (err) {
       res = err.toString();
@@ -54,16 +62,24 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
 
   @override
   Future<String> likePost(String postId, String userId, List likes) async {
-     String res = "Some error occurred";
+    String res = "Some error occurred";
     try {
       if (likes.contains(userId)) {
         // if the likes list contains the user uid, we need to remove it
-        firebaseCloudStorage.firebaseFirestoreInstance().collection(_posts).doc(postId).update({
+        firebaseCloudStorage
+            .firebaseFirestoreInstance()
+            .collection(_posts)
+            .doc(postId)
+            .update({
           'likes': FieldValue.arrayRemove([userId])
         });
       } else {
         // else we need to add uid to the likes array
-        firebaseCloudStorage.firebaseFirestoreInstance().collection(_posts).doc(postId).update({
+        firebaseCloudStorage
+            .firebaseFirestoreInstance()
+            .collection(_posts)
+            .doc(postId)
+            .update({
           'likes': FieldValue.arrayUnion([userId])
         });
       }
@@ -76,7 +92,8 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
 
   @override
   Stream<Iterable<CloudPost>> userAllPosts(String userId) {
-    return firebaseCloudStorage.firebaseFirestoreInstance()
+    return firebaseCloudStorage
+        .firebaseFirestoreInstance()
         .collection(_posts)
         .where('user_id', isEqualTo: userId)
         .snapshots()
@@ -86,11 +103,12 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
           ),
         );
   }
-  
+
   @override
   Future<List<CloudPost>> searchPosts(String keyword) {
     if (keyword.isNotEmpty) {
-      return firebaseCloudStorage.firebaseFirestoreInstance()
+      return firebaseCloudStorage
+          .firebaseFirestoreInstance()
           .collection(_posts)
           .where('full_name', isGreaterThanOrEqualTo: keyword.toUpperCase())
           .get()
@@ -102,7 +120,8 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
                 .toList(),
           );
     } else {
-      return firebaseCloudStorage.firebaseFirestoreInstance()
+      return firebaseCloudStorage
+          .firebaseFirestoreInstance()
           .collection(_posts)
           .orderBy('published_time', descending: true)
           .get()
@@ -119,7 +138,8 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
   @override
   Future<void> createNewComment(CloudPostComment cloudPostComment) async {
     if (cloudPostComment.commentText.isNotEmpty) {
-      firebaseCloudStorage.firebaseFirestoreInstance()
+      firebaseCloudStorage
+          .firebaseFirestoreInstance()
           .collection(_posts)
           .doc(cloudPostComment.postId)
           .collection(_comment)
@@ -129,9 +149,11 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
           );
     }
   }
+
   @override
   Stream<Iterable<CloudPostComment>> allPostComment(CloudPost cloudPost) {
-    return firebaseCloudStorage.firebaseFirestoreInstance()
+    return firebaseCloudStorage
+        .firebaseFirestoreInstance()
         .collection(_posts)
         .doc(cloudPost.postId)
         .collection(_comment)
@@ -142,5 +164,4 @@ class FirebaseCloudPostProvider extends CloudPostProvider {
           ),
         );
   }
-   
 }

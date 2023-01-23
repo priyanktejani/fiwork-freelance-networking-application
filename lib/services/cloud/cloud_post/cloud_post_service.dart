@@ -17,7 +17,7 @@ class CloudPostService implements CloudPostProvider {
 
   @override
   Future<void> createNewPost(CloudPost cloudPost) =>
-      provider.createNewPost(cloudPost);
+provider.createNewPost(cloudPost);
 
   @override
   Future<String> deletePost(String postId) => provider.deletePost(postId);

@@ -20,10 +20,12 @@ class CloudGigService implements CloudGigProvider {
       provider.gigsByCategory(category);
 
   @override
-  Future<List<CloudGig>> searchGigs(String keyword) => provider.searchGigs(keyword);
+  Future<List<CloudGig>> searchGigs(String keyword) =>
+      provider.searchGigs(keyword);
 
   @override
-  Stream<Iterable<CloudGig>> userAllGigs(String userId) => provider.userAllGigs(userId);
+  Stream<Iterable<CloudGig>> userAllGigs(String userId) =>
+      provider.userAllGigs(userId);
   
   @override
   Stream<Iterable<CloudGig>> allGigs() => provider.allGigs();
